@@ -20,5 +20,5 @@ return [
     ],
 
     // Debug
-    'debug' => true,
+    'debug'         => true,
 ];

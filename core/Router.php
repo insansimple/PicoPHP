@@ -11,6 +11,11 @@ class Router
         $this->routes[] = compact('method', 'uri', 'action');
     }
 
+    public function getRoutes()
+    {
+        return $this->routes;
+    }
+
     public function dispatch($method, $uri)
     {
         $method = strtoupper($method);

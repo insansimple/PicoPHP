@@ -1,2 +1,7 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+/test/                 export-ignore
+/phpunit.xml           export-ignore
+/.github/              export-ignore
+/.gitignore            export-ignore
+/.editorconfig         export-ignore
+README.md              export-ignore
+composer.lock          export-ignore
