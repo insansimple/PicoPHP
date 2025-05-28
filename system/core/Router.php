@@ -58,6 +58,7 @@ class Router
         // '/:([\w]+)' akan cocok dengan '/:nama_parameter'
         // dan (?P<$1>[^/]+) akan membuat grup bernama ($1 merujuk pada 'nama_parameter')
         // yang menangkap segmen non-garis miring setelah garis miring.
+        $pattern = rtrim($pattern, '/'); // Menghapus garis miring di akhir pola untuk konsistensi.
         $pattern = preg_replace('/\/:([\w]+)/', '/(?P<$1>[^/]+)', $pattern);
 
         // Menambahkan pembatas regex (^) dan ($) untuk memastikan pola cocok dengan seluruh URI,
@@ -88,12 +89,14 @@ class Router
      */
     public function on(array $methods, $pattern, $controller)
     {
+        $middleware = null;
         foreach ($methods as $m) {
             // Memastikan setiap metode yang diberikan adalah huruf kecil.
             $m = strtolower($m);
             // Memanggil metode add untuk setiap metode yang diberikan.
-            $this->add($m, $pattern, $controller);
+            $middleware = $this->add($m, $pattern, $controller);
         }
+        return $middleware; // Mengembalikan instance middleware dari penambahan rute terakhir.
     }
 
     // --- Pintasan Metode HTTP-Spesifik ---
@@ -171,7 +174,7 @@ class Router
      * Ini memungkinkan penggunaan nama pendek untuk controller, misalnya 'Home' -> 'HomeController'.
      *
      * @param array $alias Array asosiatif alias => nama kelas controller.
-     * Contoh: ['Home' => 'HomeController', 'User' => 'UserController']
+     * Contoh: ['HomeController' => 'Home', 'UserController' => 'User']
      * @return void
      */
     public function setAlias(array $alias)
@@ -193,12 +196,13 @@ class Router
     {
         // Mengubah metode HTTP yang masuk menjadi huruf kecil untuk pencocokan.
         $method = strtolower($method);
+        $uri = rtrim($uri, '/'); // Menghapus garis miring di akhir URI untuk konsistensi.
 
         // Memeriksa apakah ada rute yang terdaftar untuk metode HTTP ini.
         if (!isset($this->routes[$method])) {
             // Jika tidak ada rute untuk metode ini, kirim respons 405 Method Not Allowed.
             http_response_code(405);
-            throw new \Exception("Method Not Allowed");
+            throw new \Exception("Method tidak diizinkan untuk URI '$uri'");
             return;
         }
 
@@ -209,7 +213,6 @@ class Router
                 // Jika cocok, memisahkan string controller (misalnya, 'UserController/index')
                 // menjadi nama kelas controller dan nama fungsi.
                 list($controller, $function) = explode('/', $route['controller']);
-
                 // Menyaring parameter rute yang ditangkap dari hasil preg_match.
                 // 'is_string' digunakan untuk hanya mengambil parameter bernama (kunci string).
                 $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
@@ -218,7 +221,7 @@ class Router
                 $resolvedClass = null;
 
                 // Memeriksa apakah controller yang diberikan adalah alias.
-                // Mencari nilai controller dalam array alias (misalnya, mencari 'HomeController' di array ['Home' => 'HomeController']).
+                // Mencari nilai controller dalam array alias (misalnya, mencari 'HomeController' di array ['HomeController' => 'Home']).
                 $aliasMatched = array_search($controller, $this->alias, true);
                 if ($aliasMatched !== false) {
                     // Jika cocok dengan alias, gunakan alias tersebut untuk membangun nama kelas lengkap.
@@ -244,7 +247,7 @@ class Router
 
                 // Jika kelas atau metode controller tidak ditemukan (setelah cocok dengan pola rute).
                 http_response_code(500); // Kode status 500 Internal Server Error.
-                throw new \Exception("Controller or method not found");
+                throw new \Exception("Controller atau method tidak ditemukan found");
                 return;
             }
         }
@@ -255,7 +258,7 @@ class Router
         // Memeriksa mode debug aplikasi (Diasumsikan ada fungsi `config('debug')`).
         if (function_exists('config') && config('debug') === true) {
             // Jika mode debug aktif, lempar pengecualian dengan detail URI.
-            throw new \Exception("404 Not Found: The requested URL '$uri' was not found on this server.");
+            throw new \Exception("404 Not Found: URL yang direquest '$uri' tidak ada pada server ini.");
         } else {
             // Jika mode debug tidak aktif, sertakan halaman kesalahan 404 kustom.
             // Jalur disesuaikan agar sesuai dengan struktur kerangka kerja.

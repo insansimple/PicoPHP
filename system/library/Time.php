@@ -157,7 +157,7 @@ class Time
     {
         // Memastikan ekstensi intl tersedia
         if (!class_exists('\IntlDateFormatter')) {
-            throw new \Exception("PHP intl extension is not enabled. Please enable it to use " . __METHOD__);
+            throw new \Exception("PHP intl extension belum di enable. Enable terlebih dahulu sebelum menggunakan " . __METHOD__);
         }
 
         // Mengkonversi timestamp atau string ke integer timestamp

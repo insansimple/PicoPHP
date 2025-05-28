@@ -95,7 +95,7 @@ class Mail
 
         // Memeriksa apakah file view ada. Jika tidak, lemparkan pengecualian.
         if (!file_exists($viewFile)) {
-            throw new \Exception("Email view '$view.php' not found.");
+            throw new \Exception("Email view '$view.php' tidak ditemukan.");
         }
 
         // Mengekstrak array $data menjadi variabel individual.

@@ -123,15 +123,15 @@ class Middleware
                     });
                 } else {
                     // Melemparkan pengecualian jika metode 'handle' tidak ditemukan di kelas middleware.
-                    throw new \Exception("Method handle not found in middleware class: " . $middlewareClass);
+                    throw new \Exception("Tidak ditemukan method handle di class middleware: " . $middlewareClass);
                 }
             } else {
                 // Melemparkan pengecualian jika kelas middleware tidak ditemukan.
-                throw new \Exception("Middleware class not found: " . $middlewareClass);
+                throw new \Exception("Class Middleware  tidak ditemukan: " . $middlewareClass);
             }
         } else {
             // Melemparkan pengecualian jika alias middleware tidak terdaftar.
-            throw new \Exception("Middleware not registered: " . $middleware);
+            throw new \Exception("Middleware tidak diatur: " . $middleware);
         }
     }
 }

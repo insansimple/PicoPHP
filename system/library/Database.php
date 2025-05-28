@@ -39,16 +39,16 @@ class Database
             // Cek koneksi
             if ($this->connection->connect_error) {
                 // Melempar exception jika ada kesalahan koneksi
-                throw new \Exception('Connection failed: ' . $this->connection->connect_error);
+                throw new \Exception('Koneksi database gagal: ' . $this->connection->connect_error);
             }
         } catch (mysqli_sql_exception $e) {
             // Tangkap mysqli_sql_exception dan lemparkan sebagai generic \Exception
             $this->error = $e->getMessage();
-            throw new \Exception("Database Connection Error: " . $this->error, $e->getCode(), $e);
+            throw new \Exception("Koneksi database error: " . $this->error, $e->getCode(), $e);
         } catch (\Exception $e) {
             // Tangkap exception umum lainnya jika ada
             $this->error = $e->getMessage();
-            throw new \Exception("An unexpected database error occurred: " . $this->error, $e->getCode(), $e);
+            throw new \Exception("Terjadi kesalahan database yang tidak terduga: " . $this->error, $e->getCode(), $e);
         }
     }
 
@@ -81,7 +81,7 @@ class Database
     public function getConnection()
     {
         if (!$this->connection || $this->connection->connect_error) {
-            throw new \Exception("Database connection is not available.");
+            throw new \Exception("Koneksi database tidak tersedia.");
         }
         return $this->connection;
     }
@@ -155,11 +155,11 @@ class Database
     public function execute()
     {
         if ($this->stmt === null) {
-            throw new \Exception("No statement prepared to execute.");
+            throw new \Exception("Tidak ada statement untuk di execute.");
         }
         if (!$this->stmt->execute()) {
             $this->error = 'Execution failed: ' . $this->stmt->error;
-            throw new \Exception("Query Execution Error: " . $this->error);
+            throw new \Exception("Eksekusi kueri gagal: " . $this->error);
         }
         return true;
     }
@@ -175,7 +175,7 @@ class Database
         $this->execute();
         $result = $this->stmt->get_result();
         if ($result === false) {
-            throw new \Exception("Failed to get result set: " . $this->stmt->error);
+            throw new \Exception("Gagal untuk mendapatkan resultSet: " . $this->stmt->error);
         }
         return $result->fetch_all(MYSQLI_ASSOC); // Mengambil sebagai array asosiatif
     }
@@ -191,7 +191,7 @@ class Database
         $this->execute();
         $result = $this->stmt->get_result();
         if ($result === false) {
-            throw new \Exception("Failed to get single result: " . $this->stmt->error);
+            throw new \Exception("Gagal untuk mendapatkan single result: " . $this->stmt->error);
         }
         return $result->fetch_object(); // Mengambil sebagai objek
     }
@@ -230,7 +230,7 @@ class Database
     public function insert(string $table, array $data)
     {
         if (empty($data)) {
-            throw new \Exception("Data for insert cannot be empty.");
+            throw new \Exception("Data untuk insert tidak boleh kosong.");
         }
 
         $columns = implode(', ', array_keys($data));
@@ -260,10 +260,10 @@ class Database
     public function update(string $table, array $data, string $where, array $whereParams = [])
     {
         if (empty($data)) {
-            throw new \Exception("Data for update cannot be empty.");
+            throw new \Exception("Data untuk update tidak boleh kosong.");
         }
         if (empty($where)) {
-            throw new \Exception("WHERE clause for update cannot be empty.");
+            throw new \Exception("WHERE clause untuk update tidak boleh kosong.");
         }
 
         $setParts = [];
@@ -298,7 +298,7 @@ class Database
     public function delete(string $table, string $where, array $whereParams = [])
     {
         if (empty($where)) {
-            throw new \Exception("WHERE clause for delete cannot be empty.");
+            throw new \Exception("WHERE clause untuk delete tidak boleh kosong.");
         }
 
         if (substr_count($where, '?') !== count($whereParams)) {

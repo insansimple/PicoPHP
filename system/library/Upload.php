@@ -29,7 +29,7 @@ class Upload
         // jangan jalankan ketika dipanggil dari cli
         if (php_sapi_name() !== 'cli') {
             if (!isset($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
-                throw new \Exception("File upload error: No file uploaded or invalid file.");
+                throw new \Exception("File upload error: Tidak ada file di upload atau file invalid.");
             }
         }
         $this->file = $file;
@@ -38,7 +38,7 @@ class Upload
     public function getFile()
     {
         if ($this->file === null) {
-            throw new \Exception("No file has been set for upload.");
+            throw new \Exception("Tidak ada file yang diset untuk diupload.");
         }
         return $this->file;
     }
@@ -46,7 +46,7 @@ class Upload
     public function getFileName()
     {
         if ($this->file === null) {
-            throw new \Exception("No file has been set for upload.");
+            throw new \Exception("Tidak ada file yang diset untuk diupload.");
         }
         return pathinfo($this->file['name'], PATHINFO_FILENAME);
     }
@@ -55,7 +55,7 @@ class Upload
     public function getFullName()
     {
         if ($this->file === null) {
-            throw new \Exception("No file has been set for upload.");
+            throw new \Exception("Tidak ada file yang diset untuk diupload.");
         }
         return $this->file['name'];
     }
@@ -63,7 +63,7 @@ class Upload
     public function getFileSize()
     {
         if ($this->file === null) {
-            throw new \Exception("No file has been set for upload.");
+            throw new \Exception("Tidak ada file yang diset untuk diupload.");
         }
         return $this->file['size'];
     }
@@ -71,7 +71,7 @@ class Upload
     public function getFileType()
     {
         if ($this->file === null) {
-            throw new \Exception("No file has been set for upload.");
+            throw new \Exception("Tidak ada file yang diset untuk diupload.");
         }
         return $this->file['type'];
     }
@@ -79,15 +79,15 @@ class Upload
     public function store($destination, $filename = null)
     {
         if ($this->file === null) {
-            throw new \Exception("No file has been set for upload.");
+            throw new \Exception("Tidak ada file yang diset untuk diupload.");
         }
 
         if (!is_dir($destination)) {
-            throw new \Exception("Destination directory does not exist: " . $destination);
+            throw new \Exception("Direktori tujuan upload tidak ditemukan: " . $destination);
         }
 
         if (!is_writable($destination)) {
-            throw new \Exception("Destination directory is not writable: " . $destination);
+            throw new \Exception("Direktori tujuan upload tidak bisa ditulis: " . $destination);
         }
 
         if (is_null($filename)) {
@@ -98,7 +98,7 @@ class Upload
 
         if (!php_sapi_name() === 'cli') {
             if (!move_uploaded_file($this->file['tmp_name'], $targetPath)) {
-                throw new \Exception("Failed to move uploaded file to destination: " . $targetPath);
+                throw new \Exception("Gagal memindahkan file yang diupload ke direktori: " . $targetPath);
             }
         }
 

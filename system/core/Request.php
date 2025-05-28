@@ -222,7 +222,7 @@ class Request
         // Memeriksa apakah file dengan kunci yang diberikan ada dan diunggah tanpa kesalahan.
         if (!$this->hasFile($key)) {
             // Melemparkan pengecualian jika file tidak ditemukan atau ada masalah upload.
-            throw new \Exception("File with key '$key' not found or not uploaded properly.");
+            throw new \Exception("File dengan key '$key' tidak ditemukan atau tidak di upload dengan benar.");
         }
 
         // Menyimpan informasi file yang diunggah ke properti privat $file.

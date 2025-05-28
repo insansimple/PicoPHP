@@ -13,7 +13,7 @@ class File
     public static function read($file_path)
     {
         if (!file_exists($file_path)) {
-            throw new \Exception("File not found: " . $file_path);
+            throw new \Exception("File tidak ditemukan: " . $file_path);
         }
         return file_get_contents($file_path);
     }
@@ -46,7 +46,7 @@ class File
     public static function download($file_path, $download_name = null)
     {
         if (!file_exists($file_path)) {
-            throw new \Exception("File not found: " . $file_path);
+            throw new \Exception("File tidak ditemukan: " . $file_path);
         }
 
         if (is_null($download_name)) {

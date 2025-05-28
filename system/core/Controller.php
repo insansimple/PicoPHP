@@ -2,6 +2,8 @@
 
 namespace System\Core;
 
+use System\Core\Middleware;
+
 /**
  * Class Controller
  *
@@ -51,8 +53,8 @@ class Controller
             // Jika file view tidak ditemukan, atur kode respons HTTP ke 500
             // dan tampilkan pesan kesalahan.
             http_response_code(500);
-            throw new \Exeption("View file '$view.php' not found.");
-            // Anda bisa juga throw new \Exception("View file '$view.php' not found.");
+            throw new \Exception("View file '$view.php' not found.");
+            // Anda bisa juga throw new \Exception("View file '$view.php' tidak.");
             // untuk penanganan error yang lebih terstruktur.
         }
     }
@@ -93,6 +95,11 @@ class Controller
         exit;
     }
 
+    public function middleware(string $key_middleware)
+    {
+        $middleware = Middleware::getInstance();
+        return $middleware->middleware($key_middleware);
+    }
     // Fungsi lain yang dapat ditambahkan di sini meliputi:
     // - Metode untuk menangani input request (GET, POST).
     // - Metode untuk mengembalikan respons JSON.

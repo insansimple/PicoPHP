@@ -11,6 +11,7 @@ class AuthMiddleware implements MiddlewareInterface
 {
     public function handle(Request $request, Response $response,  Closure $next)
     {
+        echo "hello from AuthMiddleware<br>";
         return $next($request);
     }
 }
