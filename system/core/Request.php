@@ -25,7 +25,7 @@ class Request
      *
      * @return string Metode HTTP. Mengembalikan 'GET' sebagai default jika tidak dapat ditentukan.
      */
-    public function method()
+    public function getMethod()
     {
         // Mengambil metode permintaan dari superglobal $_SERVER.
         // Menggunakan operator null coalescing (??) untuk memberikan nilai default 'GET'
@@ -68,11 +68,11 @@ class Request
     /**
      * Mendapatkan semua parameter kueri (query parameters) dari permintaan GET.
      * Parameter kueri adalah bagian dari URL setelah tanda tanya (?).
-     * Contoh: Untuk 'http://example.com/search?q=php&sort=date', queryParams() akan mengembalikan ['q' => 'php', 'sort' => 'date'].
+     * Contoh: Untuk 'http://example.com/search?q=php&sort=date', getParamsURL() akan mengembalikan ['q' => 'php', 'sort' => 'date'].
      *
      * @return array Parameter kueri sebagai array asosiatif.
      */
-    public function queryParams()
+    public function getParamsURL()
     {
         // Mengembalikan superglobal $_GET yang secara otomatis diisi oleh PHP
         // dengan parameter kueri dari URL.
@@ -85,7 +85,7 @@ class Request
      *
      * @return array Data POST sebagai array asosiatif.
      */
-    public function postData()
+    public function getDataPost()
     {
         // Mengembalikan superglobal $_POST yang secara otomatis diisi oleh PHP
         // dengan data yang dikirim melalui metode POST.
@@ -141,7 +141,7 @@ class Request
      * @param string $header Nama header yang ingin diambil (misalnya, 'Content-Type', 'User-Agent').
      * @return string|null Nilai header atau null jika header tidak ditemukan.
      */
-    public function header($header)
+    public function getHeader($header)
     {
         // Mengubah nama header ke format yang digunakan oleh $_SERVER (misalnya, 'Content-Type' menjadi 'HTTP_CONTENT_TYPE').
         // Semua header HTTP dari permintaan diawali dengan 'HTTP_' di array $_SERVER,
@@ -156,7 +156,7 @@ class Request
      *
      * @return array Semua header sebagai array asosiatif (nama_header_lowercase_dengan_strip => nilai).
      */
-    public function headers()
+    public function getHeaders()
     {
         $headers = [];
         // Melakukan iterasi pada superglobal $_SERVER.
@@ -182,7 +182,7 @@ class Request
     public function isAjax()
     {
         // Memeriksa nilai header 'X-Requested-With'.
-        return $this->header('X-Requested-With') === 'XMLHttpRequest';
+        return $this->getHeader('X-Requested-With') === 'XMLHttpRequest';
     }
 
     /**
@@ -201,7 +201,7 @@ class Request
      *
      * @return array Superglobal $_FILES yang berisi informasi tentang file yang diunggah.
      */
-    public function files()
+    public function getFiles()
     {
         // Mengembalikan superglobal $_FILES yang diisi oleh PHP dengan informasi file yang diunggah.
         return $_FILES;

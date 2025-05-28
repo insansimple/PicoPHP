@@ -1,5 +1,4 @@
 <?php
-
 return [
     // Aplikasi
     'app_name'     => 'PicoPHP',
@@ -24,6 +23,13 @@ return [
         'from' => 'noreply@yourdomain.com',
         'from_name' => 'PicoPHP Mailer',
         'reply_to' => 'support@yourdomain.com',
+    ],
+
+    'security' => [
+        'encryption_key' => 'your-encryption-key-here', // Ganti dengan kunci enkripsi yang aman
+        'csrf_token' => true, // Aktifkan CSRF token
+        'xss_protection' => false, // Aktifkan perlindungan XSS
+        'csp' => "default-src 'self'; style-src 'self' 'unsafe-inline'", // Content Security Policy
     ],
 
     // Debug

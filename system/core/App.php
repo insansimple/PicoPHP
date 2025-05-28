@@ -19,7 +19,24 @@ class App
     public function __construct()
     {
         $this->load_helpers();
+        $this->setDefaultConfiguration();
+        $this->xss_protection();
+    }
 
+    private function xss_protection()
+    {
+        // Mengaktifkan perlindungan XSS
+        if (config('security.xss_protection')) {
+            header('X-XSS-Protection: 1; mode=block');
+            $config_csp = config('security.csp') ?? null;
+            if ($config_csp) {
+                header("Content-Security-Policy: {config('security.csp')};");
+            }
+        }
+    }
+
+    private function setDefaultConfiguration()
+    {
         $environment = config('environment') ?? 'development';
         $debug = config('debug') ?? true;
         $mysql_debug = config('mysql_debug') ?? true;

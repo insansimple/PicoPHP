@@ -9,13 +9,23 @@ namespace System\Library;
  * Menyediakan fungsionalitas untuk mendapatkan waktu saat ini, timestamp,
  * format tanggal, menghitung perbedaan waktu, dan menampilkan waktu "sejak".
  */
+
+enum Country
+{
+    case ID;
+    case US;
+    case GB;
+    case FR;
+    case DE;
+    // Tambahkan lebih banyak lokal sesuai kebutuhan
+}
+
 class Time
 {
     /**
      * @var string $timezone Menyimpan zona waktu yang dikonfigurasi untuk aplikasi.
      */
     protected static $timezone;
-
     /**
      * Inisialisasi statis.
      *
@@ -153,7 +163,7 @@ class Time
      * @throws \InvalidArgumentException Jika timestamp yang diberikan tidak valid.
      * @throws \Exception Jika ekstensi intl tidak diaktifkan.
      */
-    public static function countryFormat($timestamp, $country = 'ID', $format = 'yyyy-MM-dd HH:mm:ss')
+    public static function countryFormat($timestamp, Country $country = Country::ID, $format = 'yyyy-MM-dd HH:mm:ss')
     {
         // Memastikan ekstensi intl tersedia
         if (!class_exists('\IntlDateFormatter')) {
@@ -168,17 +178,26 @@ class Time
         }
 
         // Pemetaan kode negara ke lokal ICU
-        $locales = [
-            'ID' => 'id_ID',
-            'US' => 'en_US',
-            'GB' => 'en_GB',
-            'FR' => 'fr_FR',
-            'DE' => 'de_DE',
-            // Tambahkan lebih banyak lokal sesuai kebutuhan
-        ];
-
-        // Mendapatkan lokal yang sesuai, default ke 'en_US' jika tidak ditemukan
-        $locale = $locales[strtoupper($country)] ?? 'en_US';
+        switch ($country) {
+            case Country::ID:
+                $locale = 'id_ID';
+                break;
+            case Country::US:
+                $locale = 'en_US';
+                break;
+            case Country::GB:
+                $locale = 'en_GB';
+                break;
+            case Country::FR:
+                $locale = 'fr_FR';
+                break;
+            case Country::DE:
+                $locale = 'de_DE';
+                break;
+            default:
+                $locale = 'en_US'; // Default ke 'en_US' jika tidak ada yang cocok
+                break;
+        }
 
         // Membuat objek IntlDateFormatter untuk memformat tanggal
         $fmt = new \IntlDateFormatter(
