@@ -1,12 +1,18 @@
 <?php
+
 namespace App\Models;
 
-class User {
-    public static function all() {
-        // contoh return dummy data
-        return [
-            ['id'=>1, 'name'=>'Insan'],
-            ['id'=>2, 'name'=>'Developer'],
-        ];
+use System\Core\Model;
+use System\Library\Database;
+
+class User extends Model
+{
+    protected $table = 'users';
+
+    public function listData()
+    {
+        $db = Database::getInstance();
+        $data = $db->query("SELECT * FROM {$this->table}")->resultSet();
+        return $data;
     }
 }

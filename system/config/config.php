@@ -12,13 +12,21 @@ return [
         'driver'    => 'mysql',
         'host'      => '127.0.0.1',
         'port'      => '3306',
-        'database'  => 'picophp_db',
+        'database'  => 'test',
         'username'  => 'root',
         'password'  => '',
         'charset'   => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
     ],
 
+    // Mailer
+    'mail' => [
+        'from' => 'noreply@yourdomain.com',
+        'from_name' => 'PicoPHP Mailer',
+        'reply_to' => 'support@yourdomain.com',
+    ],
+
     // Debug
     'debug'         => true,
+    'mysql_debug'   => true, // Aktifkan debug MySQL
 ];

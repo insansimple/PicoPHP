@@ -2,12 +2,18 @@
 
 namespace App\Controllers;
 
-use Core\Controller;
+use System\Core\Controller;
+use Closure;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        view('home', ['title' => 'Welcome to PicoPHP']);
+        echo "Welcome to the Home Page!";
+    }
+
+    public function home($id)
+    {
+        echo $id;
     }
 }

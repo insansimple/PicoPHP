@@ -1,5 +1,5 @@
 {
-  "name": "insan/picophp",
+  "name": "insansimple/picophp",
   "description": "Framework PHP kecil yang mengemas kekuatan besar.",
   "type": "project",
   "license": "MIT",
@@ -12,7 +12,7 @@
   "autoload": {
     "psr-4": {
       "App\\": "app/",
-      "Core\\": "core/"
+      "System\\": "system/"
     }
   },
   "require-dev": {
