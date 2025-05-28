@@ -41,6 +41,26 @@ if (!function_exists('base_url')) {
     }
 }
 
+
+if (!function_exists('site_url')) {
+    /**
+     * Mengembalikan URL lengkap untuk rute aplikasi.
+     *
+     * Fungsi ini adalah alias untuk `base_url()` yang mengembalikan URL lengkap
+     * dengan path yang diberikan. Ini berguna untuk membangun tautan ke rute
+     * dalam aplikasi.
+     *
+     * @param string $path Path relatif ke rute aplikasi (misalnya 'users/profile').
+     * @return string URL lengkap ke rute aplikasi.
+     */
+    function site_url($path = '')
+    {
+        // Menggunakan base_url untuk membangun URL ke rute aplikasi
+        return base_url($path, true);
+    }
+}
+
+
 if (!function_exists('asset')) {
     /**
      * Mengembalikan URL lengkap untuk aset (seperti CSS, JavaScript, gambar).
