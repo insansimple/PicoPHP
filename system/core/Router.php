@@ -49,7 +49,7 @@ class Router
      * @param string $controller String yang menunjukkan controller dan metode yang akan dipanggil (misalnya, 'UserController/index').
      * @return Middleware Instance dari kelas Middleware, untuk chaining.
      */
-    public function add(string $method, string $pattern, string $controller)
+    public function add(string $method, string $pattern, $controller)
     {
         // Mengubah metode HTTP menjadi huruf kecil untuk konsistensi.
         $method = strtolower($method);
@@ -210,6 +210,12 @@ class Router
         foreach ($this->routes[$method] as $route) {
             // Mencoba mencocokkan URI dengan pola regex rute.
             if (preg_match($route['pattern'], $uri, $matches)) {
+                // Jika cocok, $matches berisi parameter yang ditangkap dari URI.
+                // Jika controller adalah callable, langsung panggil.
+                if (isset($route['controller']) && is_callable($route['controller'])) {
+                    // Jika controller adalah callable, panggil langsung.
+                    return call_user_func($route['controller'], $matches);
+                }
                 // Jika cocok, memisahkan string controller (misalnya, 'UserController/index')
                 // menjadi nama kelas controller dan nama fungsi.
                 list($controller, $function) = explode('/', $route['controller']);
